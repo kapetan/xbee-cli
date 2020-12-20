@@ -18,13 +18,13 @@ Commands:
   xbee tail <path>           Tail serial output from device
 
 Options:
-  --help     Show help                                                                                         [boolean]
-  --version  Show version number                                                                               [boolean]
+  --help     Show help                                                              [boolean]
+  --version  Show version number                                                    [boolean]
 ```
 
 For example to copy a local file to a XBee device.
 
-```
+```sh
 xbee cp test.txt /dev/tty.usbserial:/flash/test.txt
 ```
 
