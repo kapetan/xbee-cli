@@ -1,6 +1,6 @@
 {
   "name": "xbee-cli",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "XBee development command line tools",
   "main": "index.js",
   "scripts": {
