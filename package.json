@@ -1,0 +1,35 @@
+{
+  "name": "xbee-cli",
+  "version": "0.0.0",
+  "description": "XBee development command line tools",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard --verbose"
+  },
+  "bin": {
+    "xbee": "bin.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kapetan/xbee-cli.git"
+  },
+  "keywords": [
+    "xbee",
+    "cli",
+    "serial",
+    "tool"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kapetan/xbee-cli/issues"
+  },
+  "homepage": "https://github.com/kapetan/xbee-cli#readme",
+  "dependencies": {
+    "serialport": "^9.0.3",
+    "xbee-serial-stream": "0.0.2",
+    "yargs": "^16.2.0"
+  },
+  "devDependencies": {
+    "standard": "^16.0.3"
+  }
+}
