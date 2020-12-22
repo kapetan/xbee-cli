@@ -15,6 +15,7 @@ Commands:
   xbee cp <source> <target>  Copy source file to target
   xbee ls <source>           List files in source directory
   xbee rm <source>           Remove source file or empty directory
+  xbee at <path> <cmd>       Execute AT command on device
   xbee tail <path>           Tail serial output from device
 
 Options:

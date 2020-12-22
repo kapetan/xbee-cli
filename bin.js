@@ -38,6 +38,24 @@ yargs(hideBin(process.argv))
         .example('$0 rm /dev/tty.usbserial:/flash/test.txt', 'Remove file on device'),
     argv =>
       xbee.remove(argv.source))
+  .command('at <path> <cmd>', 'Execute AT command on device',
+    yargs =>
+      yargs
+        .positional('path', {
+          describe: 'Serial port path'
+        })
+        .positional('cmd', {
+          describe: 'AT command to execute'
+        })
+        .option('terminator', {
+          description: 'Terminator condition for the command response'
+        })
+        .example('$0 at /dev/tty.usbserial SH', 'Get value for SH (serial number high)')
+        .example('$0 at /dev/tty.usbserial "FS LS" --terminator ""', 'List files on device'),
+    argv =>
+      xbee.command(argv.path, argv.cmd, argv.terminator)
+        .then(result =>
+          result.forEach(item => console.log(item))))
   .command('tail <path>', 'Tail serial output from device',
     yargs =>
       yargs

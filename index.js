@@ -59,7 +59,7 @@ async function list (source) {
   const device = new DeviceStream()
   const port = new SerialPort(source.device, { baudRate: BAUD_RATE })
   const pipe = promisify(pipeline)(device, port, device)
-  const ls = await device.command('FS LS' + path, null, '')
+  const ls = await device.command('FS LS' + path, '')
   port.destroy()
 
   try {
@@ -87,6 +87,20 @@ async function remove (source) {
   }
 }
 
+async function command (path, cmd, terminator) {
+  const device = new DeviceStream()
+  const port = new SerialPort(path, { baudRate: BAUD_RATE })
+  const pipe = promisify(pipeline)(device, port, device)
+  const result = await device.command(cmd, terminator)
+  port.destroy()
+
+  try {
+    await pipe
+  } catch (err) {}
+
+  return result
+}
+
 async function tail (path) {
   const port = new SerialPort(path, { baudRate: BAUD_RATE })
   await promisify(pipeline)(port, process.stdout)
@@ -95,4 +109,5 @@ async function tail (path) {
 exports.copy = copy
 exports.list = list
 exports.tail = tail
+exports.command = command
 exports.remove = remove
