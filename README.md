@@ -16,6 +16,7 @@ Commands:
   xbee ls <source>           List files in source directory
   xbee rm <source>           Remove source file or empty directory
   xbee at <path> <cmd>       Execute AT command on device
+  xbee info [paths..]        Show device information
   xbee tail <path>           Tail serial output from device
 
 Options:

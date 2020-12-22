@@ -56,6 +56,16 @@ yargs(hideBin(process.argv))
       xbee.command(argv.path, argv.cmd, argv.terminator)
         .then(result =>
           result.forEach(item => console.log(item))))
+  .command('info [paths..]', 'Show device information',
+    yargs =>
+      yargs
+        .positional('paths', {
+          describe: 'Serial port paths'
+        })
+        .example('$0 info /dev/tty.usbserial', 'Show information for path'),
+    argv =>
+      xbee.info(argv.paths)
+        .then(result => result.length && console.table(result)))
   .command('tail <path>', 'Tail serial output from device',
     yargs =>
       yargs

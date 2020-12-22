@@ -101,6 +101,34 @@ async function command (path, cmd, terminator) {
   return result
 }
 
+async function info (paths) {
+  const result = []
+
+  for (const path of paths) {
+    const device = new DeviceStream()
+    const port = new SerialPort(path, { baudRate: BAUD_RATE })
+    const pipe = promisify(pipeline)(device, port, device)
+
+    const [bl] = await device.command('BL')
+    const [sh] = await device.command('SH')
+    const [sl] = await device.command('SL')
+
+    result.push({
+      'Serial Port': path,
+      Bluetooth: bl.padStart(12, '0'),
+      XBee: sh.padStart(8, '0') + sl.padStart(8, '0')
+    })
+
+    port.destroy()
+
+    try {
+      await pipe
+    } catch (err) {}
+  }
+
+  return result
+}
+
 async function tail (path) {
   const port = new SerialPort(path, { baudRate: BAUD_RATE })
   await promisify(pipeline)(port, process.stdout)
@@ -108,6 +136,7 @@ async function tail (path) {
 
 exports.copy = copy
 exports.list = list
-exports.tail = tail
-exports.command = command
 exports.remove = remove
+exports.command = command
+exports.info = info
+exports.tail = tail
