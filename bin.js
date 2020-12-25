@@ -48,6 +48,7 @@ yargs(hideBin(process.argv))
           describe: 'AT command to execute'
         })
         .option('terminator', {
+          alias: 't',
           description: 'Terminator condition for the command response'
         })
         .example('$0 at /dev/tty.usbserial SH', 'Get value for SH (serial number high)')
@@ -72,7 +73,12 @@ yargs(hideBin(process.argv))
         .positional('path', {
           describe: 'Serial port path'
         })
+        .option('interactive', {
+          alias: 'i',
+          default: true,
+          description: 'Interact with the Python REPL on the device'
+        })
         .example('$0 tail /dev/tty.usbserial', 'Tail output'),
-    argv => xbee.tail(argv.path))
+    argv => xbee.tail(argv.path, argv.interactive))
   .wrap(Math.min(120, terminalWidth()))
   .parse()

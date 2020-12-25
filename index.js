@@ -129,9 +129,40 @@ async function info (paths) {
   return result
 }
 
-async function tail (path) {
+async function tail (path, interactive) {
   const port = new SerialPort(path, { baudRate: BAUD_RATE })
-  await promisify(pipeline)(port, process.stdout)
+  const streams = []
+  let abort = 0
+
+  if (interactive && process.stdin.isTTY) {
+    console.log('(To exit press Ctrl+C twice in a row)')
+
+    process.stdin.setRawMode(true)
+
+    streams.push(
+      process.stdin,
+      async function * (source) {
+        for await (const data of source) {
+          if (data.includes(0x03)) {
+            abort++
+            if (abort > 1) {
+              console.log()
+              return process.exit(0)
+            }
+          } else {
+            abort = 0
+          }
+
+          yield data
+        }
+      },
+      port,
+      process.stdout)
+  } else {
+    streams.push(port, process.stdout)
+  }
+
+  await promisify(pipeline)(streams)
 }
 
 exports.copy = copy
